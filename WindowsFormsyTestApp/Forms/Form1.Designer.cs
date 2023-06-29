@@ -69,6 +69,7 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.экспортВЭксельToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.transportDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.transportTypeBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.transportTypeBindingNavigator)).BeginInit();
@@ -235,7 +236,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.фАйлToolStripMenuItem,
             this.правкаToolStripMenuItem,
-            this.sortToolStripMenuItem});
+            this.sortToolStripMenuItem,
+            this.экспортВЭксельToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -420,6 +422,13 @@
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
+            // экспортВЭксельToolStripMenuItem
+            // 
+            this.экспортВЭксельToolStripMenuItem.Name = "экспортВЭксельToolStripMenuItem";
+            this.экспортВЭксельToolStripMenuItem.Size = new System.Drawing.Size(113, 20);
+            this.экспортВЭксельToolStripMenuItem.Text = "Экспорт в эксель";
+            this.экспортВЭксельToolStripMenuItem.Click += new System.EventHandler(this.экспортВЭксельToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -489,6 +498,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem экспортВЭксельToolStripMenuItem;
     }
 }
 

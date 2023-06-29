@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -147,6 +148,27 @@ namespace WindowsFormsyTestApp
             {
                 e.Handled = true;
             }
+        }
+
+        private void экспортВЭксельToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var excelApp = new Microsoft.Office.Interop.Excel.Application();
+            excelApp.Workbooks.Add();
+           
+            excelApp.Cells[1, 1] = "Название";
+            excelApp.Cells[1, 2] = "Средняя скорость";
+            excelApp.Cells[1, 3] = "Стоимость";
+            excelApp.Cells[1, 4] = "Количество машин";
+            for (int i = 0; i < transportTypeDataGridView.Rows.Count; i++)
+            {
+                for (int j = 0; j < transportTypeDataGridView.ColumnCount; j++)
+                {
+                    excelApp.Cells[i + 2, j + 1] = transportTypeDataGridView.Rows[i].Cells[j].Value;
+                }
+            }
+
+            excelApp.Columns.AutoFit();
+            excelApp.Visible = true;
         }
     }
 }
