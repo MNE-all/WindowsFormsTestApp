@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище transportModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="path_of">
+          <Key>
+            <PropertyRef Name="id_path" />
+          </Key>
+          <Property Name="id_path" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="start_of" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="destination" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="direction" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "transport.dbo.register" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="register">
+          <Key>
+            <PropertyRef Name="id_user" />
+            <PropertyRef Name="login_user" />
+            <PropertyRef Name="password_user" />
+          </Key>
+          <Property Name="id_user" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login_user" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password_user" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "transport.dbo.route_of" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="route_of">
+          <Key>
+            <PropertyRef Name="id_route" />
+            <PropertyRef Name="number_of" />
+            <PropertyRef Name="autosCount" />
+            <PropertyRef Name="stopCount" />
+            <PropertyRef Name="passCount" />
+            <PropertyRef Name="id_path" />
+            <PropertyRef Name="id_type" />
+          </Key>
+          <Property Name="id_route" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="number_of" Type="int" Nullable="false" />
+          <Property Name="autosCount" Type="int" Nullable="false" />
+          <Property Name="stopCount" Type="int" Nullable="false" />
+          <Property Name="passCount" Type="int" Nullable="false" />
+          <Property Name="id_path" Type="int" Nullable="false" />
+          <Property Name="id_type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="transportType">
+          <Key>
+            <PropertyRef Name="id_type" />
+          </Key>
+          <Property Name="id_type" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name_of" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="avgspeed_of" Type="int" Nullable="false" />
+          <Property Name="cost_of" Type="int" Nullable="false" />
+          <Property Name="count_of" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_route_of_path_of">
+          <End Role="path_of" Type="Self.path_of" Multiplicity="1" />
+          <End Role="route_of" Type="Self.route_of" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="path_of">
+              <PropertyRef Name="id_path" />
+            </Principal>
+            <Dependent Role="route_of">
+              <PropertyRef Name="id_path" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_route_of_transportType">
+          <End Role="transportType" Type="Self.transportType" Multiplicity="1" />
+          <End Role="route_of" Type="Self.route_of" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="transportType">
+              <PropertyRef Name="id_type" />
+            </Principal>
+            <Dependent Role="route_of">
+              <PropertyRef Name="id_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище transportModelContainer">
+          <EntitySet Name="path_of" EntityType="Self.path_of" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="transportType" EntityType="Self.transportType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="register" EntityType="Self.register" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [register].[id_user] AS [id_user], 
+    [register].[login_user] AS [login_user], 
+    [register].[password_user] AS [password_user]
+    FROM [dbo].[register] AS [register]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="route_of" EntityType="Self.route_of" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [route_of].[id_route] AS [id_route], 
+    [route_of].[number_of] AS [number_of], 
+    [route_of].[autosCount] AS [autosCount], 
+    [route_of].[stopCount] AS [stopCount], 
+    [route_of].[passCount] AS [passCount], 
+    [route_of].[id_path] AS [id_path], 
+    [route_of].[id_type] AS [id_type]
+    FROM [dbo].[route_of] AS [route_of]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_route_of_path_of" Association="Self.FK_route_of_path_of">
+            <End Role="path_of" EntitySet="path_of" />
+            <End Role="route_of" EntitySet="route_of" />
+          </AssociationSet>
+          <AssociationSet Name="FK_route_of_transportType" Association="Self.FK_route_of_transportType">
+            <End Role="transportType" EntitySet="transportType" />
+            <End Role="route_of" EntitySet="route_of" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="transportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="path_of">
+          <Key>
+            <PropertyRef Name="id_path" />
+          </Key>
+          <Property Name="id_path" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="start_of" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="destination" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="direction" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="route_of" Relationship="Self.FK_route_of_path_of" FromRole="path_of" ToRole="route_of" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="transportType">
+          <Key>
+            <PropertyRef Name="id_type" />
+          </Key>
+          <Property Name="id_type" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name_of" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="avgspeed_of" Type="Int32" Nullable="false" />
+          <Property Name="cost_of" Type="Int32" Nullable="false" />
+          <Property Name="count_of" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="route_of" Relationship="Self.FK_route_of_transportType" FromRole="transportType" ToRole="route_of" />
+        </EntityType>
+        <EntityType Name="register">
+          <Key>
+            <PropertyRef Name="id_user" />
+            <PropertyRef Name="login_user" />
+            <PropertyRef Name="password_user" />
+          </Key>
+          <Property Name="id_user" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login_user" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password_user" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="route_of">
+          <Key>
+            <PropertyRef Name="id_route" />
+            <PropertyRef Name="number_of" />
+            <PropertyRef Name="autosCount" />
+            <PropertyRef Name="stopCount" />
+            <PropertyRef Name="passCount" />
+            <PropertyRef Name="id_path" />
+            <PropertyRef Name="id_type" />
+          </Key>
+          <Property Name="id_route" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="number_of" Type="Int32" Nullable="false" />
+          <Property Name="autosCount" Type="Int32" Nullable="false" />
+          <Property Name="stopCount" Type="Int32" Nullable="false" />
+          <Property Name="passCount" Type="Int32" Nullable="false" />
+          <Property Name="id_path" Type="Int32" Nullable="false" />
+          <Property Name="id_type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="path_of" Relationship="Self.FK_route_of_path_of" FromRole="route_of" ToRole="path_of" />
+          <NavigationProperty Name="transportType" Relationship="Self.FK_route_of_transportType" FromRole="route_of" ToRole="transportType" />
+        </EntityType>
+        <Association Name="FK_route_of_path_of">
+          <End Role="path_of" Type="Self.path_of" Multiplicity="1" />
+          <End Role="route_of" Type="Self.route_of" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="path_of">
+              <PropertyRef Name="id_path" />
+            </Principal>
+            <Dependent Role="route_of">
+              <PropertyRef Name="id_path" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_route_of_transportType">
+          <End Role="transportType" Type="Self.transportType" Multiplicity="1" />
+          <End Role="route_of" Type="Self.route_of" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="transportType">
+              <PropertyRef Name="id_type" />
+            </Principal>
+            <Dependent Role="route_of">
+              <PropertyRef Name="id_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="transportEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="path_of" EntityType="Self.path_of" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="transportType" EntityType="Self.transportType" />
+          <EntitySet Name="register" EntityType="Self.register" />
+          <EntitySet Name="route_of" EntityType="Self.route_of" />
+          <AssociationSet Name="FK_route_of_path_of" Association="Self.FK_route_of_path_of">
+            <End Role="path_of" EntitySet="path_of" />
+            <End Role="route_of" EntitySet="route_of" />
+          </AssociationSet>
+          <AssociationSet Name="FK_route_of_transportType" Association="Self.FK_route_of_transportType">
+            <End Role="transportType" EntitySet="transportType" />
+            <End Role="route_of" EntitySet="route_of" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище transportModelContainer" CdmEntityContainer="transportEntities">
+          <EntitySetMapping Name="path_of">
+            <EntityTypeMapping TypeName="transportModel.path_of">
+              <MappingFragment StoreEntitySet="path_of">
+                <ScalarProperty Name="id_path" ColumnName="id_path" />
+                <ScalarProperty Name="start_of" ColumnName="start_of" />
+                <ScalarProperty Name="destination" ColumnName="destination" />
+                <ScalarProperty Name="direction" ColumnName="direction" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="transportModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="transportType">
+            <EntityTypeMapping TypeName="transportModel.transportType">
+              <MappingFragment StoreEntitySet="transportType">
+                <ScalarProperty Name="id_type" ColumnName="id_type" />
+                <ScalarProperty Name="name_of" ColumnName="name_of" />
+                <ScalarProperty Name="avgspeed_of" ColumnName="avgspeed_of" />
+                <ScalarProperty Name="cost_of" ColumnName="cost_of" />
+                <ScalarProperty Name="count_of" ColumnName="count_of" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="register">
+            <EntityTypeMapping TypeName="transportModel.register">
+              <MappingFragment StoreEntitySet="register">
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="login_user" ColumnName="login_user" />
+                <ScalarProperty Name="password_user" ColumnName="password_user" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="route_of">
+            <EntityTypeMapping TypeName="transportModel.route_of">
+              <MappingFragment StoreEntitySet="route_of">
+                <ScalarProperty Name="id_route" ColumnName="id_route" />
+                <ScalarProperty Name="number_of" ColumnName="number_of" />
+                <ScalarProperty Name="autosCount" ColumnName="autosCount" />
+                <ScalarProperty Name="stopCount" ColumnName="stopCount" />
+                <ScalarProperty Name="passCount" ColumnName="passCount" />
+                <ScalarProperty Name="id_path" ColumnName="id_path" />
+                <ScalarProperty Name="id_type" ColumnName="id_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
